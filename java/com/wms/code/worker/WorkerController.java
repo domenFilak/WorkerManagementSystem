@@ -2,11 +2,12 @@ package com.wms.code.worker;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController //le @Controller ko zacnes uporabljati thymeleaf
+@Controller
 public class WorkerController {
 
     private final WorkerService workerService;
@@ -17,8 +18,14 @@ public class WorkerController {
     }
 
     @GetMapping(path="/wms/getAll")
-    public List<Worker> getWorkers(){
-        return this.workerService.getWorkers();
+    public String showAllWorkersPage(Model model){
+        model.addAttribute("workers", this.workerService.getWorkers());
+        return "all_workers";
+    }
+
+    @GetMapping(path="/wms")
+    public String showWelcomePage(){
+        return "welcome_page";
     }
 
     @DeleteMapping(path="/wms/delete/{workerId}")
