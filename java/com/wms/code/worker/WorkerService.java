@@ -22,6 +22,14 @@ public class WorkerService {
         return this.workerRepository.findAll();
     }
 
+    public Worker getWorkerById(Long id){
+        boolean exists = this.workerRepository.existsById(id);
+        if (exists == false){
+            throw new IllegalStateException("worker with id " + id + " does not exist");
+        }
+        return this.workerRepository.getReferenceById(id);
+    }
+
     public void deleteWorker(Long id){
         boolean exists = this.workerRepository.existsById(id);
         if (exists == false){

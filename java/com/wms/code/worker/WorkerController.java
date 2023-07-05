@@ -23,6 +23,19 @@ public class WorkerController {
         return "all_workers";
     }
 
+    @GetMapping(path="/wms/getById")
+    public String showSearchIdPage(Model model){
+        Worker worker = new Worker(0L);
+        model.addAttribute("workerOnlyId", worker);
+        return "search_id";
+    }
+
+    @GetMapping(path="/wms/getWorkerById")
+    public String showWorkerById(@ModelAttribute(value="workerOnlyId") Worker worker, Model model){
+        model.addAttribute("workerById", this.workerService.getWorkerById(worker.getId()));
+        return "show_id";
+    }
+
     @GetMapping(path="/wms")
     public String showWelcomePage(){
         return "welcome_page";
@@ -34,14 +47,22 @@ public class WorkerController {
         return "redirect:/wms/getAll";
     }
 
+    @GetMapping(path="/wms/add")
+    public String showAddPage(Model model){
+        Worker worker = new Worker();
+        model.addAttribute("worker", worker);
+        return "add_worker";
+    }
+
     @DeleteMapping
     public void deleteWorker(Long id){
         this.workerService.deleteWorker(id);
     }
 
-    @PostMapping(path="/wms/add")
-    public void addNewWorker(@RequestBody Worker worker){
+    @PostMapping(path="/wms/addToDb")
+    public String addNewWorker(@ModelAttribute(value="worker") Worker worker){
         this.workerService.addNewWorker(worker);
+        return "redirect:/wms/getAll";
     }
 
     @PutMapping(path="/wms/update/{workerId}")

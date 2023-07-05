@@ -23,6 +23,10 @@ public class Worker {
 
     }
 
+    public Worker(Long id){
+        this.id = id;
+    }
+
     public Worker(Long id, String firstName, String lastName, String email) {
         this.id = id;
         this.firstName = firstName;
