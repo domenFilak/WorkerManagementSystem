@@ -28,8 +28,14 @@ public class WorkerController {
         return "welcome_page";
     }
 
-    @DeleteMapping(path="/wms/delete/{workerId}")
-    public void deleteWorker(@PathVariable("workerId") Long id){
+    @GetMapping(path="/wms/delete/{workerId}")
+    public String deleteAndReloadPage(@PathVariable("workerId") Long id){
+        deleteWorker(id);
+        return "redirect:/wms/getAll";
+    }
+
+    @DeleteMapping
+    public void deleteWorker(Long id){
         this.workerService.deleteWorker(id);
     }
 
