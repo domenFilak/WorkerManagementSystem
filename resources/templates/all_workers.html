@@ -66,7 +66,7 @@
                                 <td th:text="${worker.lastName}">Last name</td>
                                 <td th:text="${worker.email}">Email</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary">Update</a>
+                                    <a th:href="@{/wms/update/{workerId} (workerId = ${worker.id})}" class="btn btn-primary">Update</a>
                                     <a th:href="@{/wms/delete/{workerId} (workerId = ${worker.id})}" class="btn btn-danger">Delete</a>
                                 </td>
                             </tr>

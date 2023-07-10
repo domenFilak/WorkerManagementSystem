@@ -65,12 +65,16 @@ public class WorkerController {
         return "redirect:/wms/getAll";
     }
 
-    @PutMapping(path="/wms/update/{workerId}")
-    public void updateWorker(@PathVariable("workerId") Long id,
-                             @RequestParam(required = true) String name,
-                             @RequestParam(required = true) String surname,
-                             @RequestParam(required = true) String email){
-        this.workerService.updateWorker(id, name, surname, email);
+    @GetMapping(path="/wms/update/{workerId}")
+    public String showUpdatePage(@PathVariable("workerId") Long id, Model model){
+        model.addAttribute("updateWorker", this.workerService.getWorkerById(id));
+        return "update_worker";
+    }
+
+    @PostMapping(path="/wms/update")
+    public String updateWorker(@ModelAttribute(value="updateWorker") Worker worker){
+        this.workerService.updateWorker(worker.getId(), worker.getFirstName(), worker.getLastName(), worker.getEmail());
+        return "redirect:/wms/getAll";
     }
 
 }
