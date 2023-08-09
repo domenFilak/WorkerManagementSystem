@@ -25,7 +25,7 @@ public class WorkerController {
 
     @GetMapping(path="/wms/getById")
     public String showSearchIdPage(Model model){
-        Worker worker = new Worker(0L);
+        Worker worker = new Worker();
         model.addAttribute("workerOnlyId", worker);
         return "search_id";
     }
