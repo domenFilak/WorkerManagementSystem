@@ -1,8 +1,10 @@
 package com.wms.code.worker;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,7 +62,10 @@ public class WorkerController {
     }
 
     @PostMapping(path="/wms/addToDb")
-    public String addNewWorker(@ModelAttribute(value="worker") Worker worker){
+    public String addNewWorker(@Valid @ModelAttribute(value="worker") Worker worker, BindingResult result){
+        if (result.hasErrors()){
+            return "add_worker";
+        }
         this.workerService.addNewWorker(worker);
         return "redirect:/wms/getAll";
     }
@@ -72,7 +77,10 @@ public class WorkerController {
     }
 
     @PostMapping(path="/wms/update")
-    public String updateWorker(@ModelAttribute(value="updateWorker") Worker worker){
+    public String updateWorker(@Valid @ModelAttribute(value="updateWorker") Worker worker, BindingResult result){
+        if (result.hasErrors()){
+            return "update_worker";
+        }
         this.workerService.updateWorker(worker.getId(), worker.getFirstName(), worker.getLastName(), worker.getEmail());
         return "redirect:/wms/getAll";
     }

@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name="workers")
@@ -11,12 +13,16 @@ public class Worker {
 
     @Id
     @Column(name="id")
+    @NotNull(message = "Worker's id cannot be null.")
     private Long id;
     @Column(name="firstname")
+    @NotEmpty(message = "Worker's first name cannot be empty.")
     private String firstName;
     @Column(name="lastname")
+    @NotEmpty(message = "Worker's last name cannot be empty.")
     private String lastName;
     @Column(name="email")
+    @NotEmpty(message = "Worker's email cannot be empty.")
     private String email;
 
     public Worker(){
