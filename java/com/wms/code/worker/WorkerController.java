@@ -66,7 +66,15 @@ public class WorkerController {
         if (result.hasErrors()){
             return "add_worker";
         }
-        this.workerService.addNewWorker(worker);
+        String err = this.workerService.addNewWorker(worker);
+        if (err.startsWith("worker with id")){
+            result.rejectValue("id", "error.id", err);
+            return "add_worker";
+        }
+        else if (err.startsWith("worker with email")){
+            result.rejectValue("email", "error.email", err);
+            return "add_worker";
+        }
         return "redirect:/wms/getAll";
     }
 

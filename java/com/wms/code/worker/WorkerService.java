@@ -38,16 +38,20 @@ public class WorkerService {
         this.workerRepository.deleteById(id);
     }
 
-    public void addNewWorker(Worker worker){
+    public String addNewWorker(Worker worker){
+        String err = "";
         boolean exists = this.workerRepository.existsById(worker.getId());
-        if (exists){
-            throw new IllegalStateException("worker with id " + worker.getId() + " already exists!");
+        if (err.isEmpty() && exists){
+            err = "worker with id " + worker.getId() + " already exists!";
         }
         Optional<Worker> workerOptional = this.workerRepository.findWorkerByEmail(worker.getEmail());
-        if (workerOptional.isPresent()){
-            throw new IllegalStateException("worker with email " + worker.getEmail() + " already exists!");
+        if (err.isEmpty() && workerOptional.isPresent()){
+            err = "worker with email " + worker.getEmail() + " already exists!";
         }
-        this.workerRepository.save(worker);
+        if (err.isEmpty()){
+            this.workerRepository.save(worker);
+        }
+        return err;
     }
 
     @Transactional
