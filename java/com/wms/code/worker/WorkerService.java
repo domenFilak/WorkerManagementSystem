@@ -55,28 +55,41 @@ public class WorkerService {
     }
 
     @Transactional
-    public void updateWorker(Long id, String firstName, String lastName, String email){
+    public String updateWorker(Long id, String firstName, String lastName, String email){
+        String err = "";
         boolean exists = this.workerRepository.existsById(id);
-        if (exists == false){
-            throw new IllegalStateException("worker with id " + id + " does not exist!");
+        if (err.isEmpty() && exists == false){
+            err = "worker with id " + id + " does not exist!";
         }
-        Worker worker = this.workerRepository.getReferenceById(id);
+        else {
+            Worker worker = this.workerRepository.getReferenceById(id);
 
-        if (firstName != null && firstName.length() > 0 && !Objects.equals(worker.getFirstName(), firstName)){
-            worker.setFirstName(firstName);
-        }
+            if (email != null && email.length() > 0 && !Objects.equals(worker.getEmail(), email)){
+                Optional<Worker> workerOptional = this.workerRepository.findWorkerByEmail(email);
+                if (err.isEmpty() && workerOptional.isPresent()){
+                    err = "worker with email " + email + " already exists!";
+                }
+                if (err.isEmpty()){
+                    worker.setEmail(email);
+                }
 
-        if (lastName != null && lastName.length() > 0 && !Objects.equals(worker.getLastName(), lastName)){
-            worker.setLastName(lastName);
-        }
-
-        if (email != null && email.length() > 0 && !Objects.equals(worker.getEmail(), email)){
-            Optional<Worker> workerOptional = this.workerRepository.findWorkerByEmail(email);
-            if (workerOptional.isPresent()){
-                throw new IllegalStateException("worker with email " + email + " already exists!");
             }
-            worker.setEmail(email);
+
+            if (firstName != null && firstName.length() > 0 && !Objects.equals(worker.getFirstName(), firstName)){
+                if (err.isEmpty()){
+                    worker.setFirstName(firstName);
+                }
+
+            }
+
+            if (lastName != null && lastName.length() > 0 && !Objects.equals(worker.getLastName(), lastName)){
+                if (err.isEmpty()){
+                    worker.setLastName(lastName);
+                }
+            }
         }
+
+        return err;
 
     }
 

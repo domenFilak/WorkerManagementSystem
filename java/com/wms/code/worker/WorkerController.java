@@ -89,7 +89,15 @@ public class WorkerController {
         if (result.hasErrors()){
             return "update_worker";
         }
-        this.workerService.updateWorker(worker.getId(), worker.getFirstName(), worker.getLastName(), worker.getEmail());
+        String err = this.workerService.updateWorker(worker.getId(), worker.getFirstName(), worker.getLastName(), worker.getEmail());
+        if (err.startsWith("worker with id")){
+            result.rejectValue("id", "error.id", err);
+            return "update_worker";
+        }
+        else if (err.startsWith("worker with email")){
+            result.rejectValue("email", "error.email", err);
+            return "update_worker";
+        }
         return "redirect:/wms/getAll";
     }
 
